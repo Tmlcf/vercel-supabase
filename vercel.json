@@ -7,7 +7,6 @@
     { "src": "/home", "dest": "templates/home.html" },
     { "src": "/contact", "dest": "templates/contact.html" },
     { "src": "/login", "dest": "templates/login.html" },
-    { "src": "/login/", "dest": "templates/login.html" },
     { "src": "/(.*)\\.html", "dest": "templates/$1.html" },
     { "src": "/(.*)", "dest": "myproject.wsgi:app" },
     { "src": "/.*", "dest": "templates/404.html" }

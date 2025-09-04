@@ -2,12 +2,8 @@
   "version": 2,
   "routes": [
     { "src": "/$", "dest": "/index.html" },
-    { "src": "/index.html", "dest": "/index.html" },
     { "src": "/about", "dest": "/about.html" },
-    { "src": "/about.html", "dest": "/about.html" },
     { "src": "/contact", "dest": "/contact.html" },
-    { "src": "/contact.html", "dest": "/contact.html" },
-    { "src": "/home", "dest": "/home.html" },
-    { "src": "/home.html", "dest": "/home.html" }
+    { "src": "/home", "dest": "/home.html" }
   ]
 }

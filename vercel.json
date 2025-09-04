@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "myproject/wsgi.py",
-      "use": "@vercel/python"
-    }
-  ],
   "routes": [
     { "src": "/$", "dest": "/public/index.html" },
     { "src": "/index.html", "dest": "/public/index.html" },
@@ -14,8 +8,6 @@
     { "src": "/contact", "dest": "/public/contact.html" },
     { "src": "/contact.html", "dest": "/public/contact.html" },
     { "src": "/home", "dest": "/public/home.html" },
-    { "src": "/home.html", "dest": "/public/home.html" },
-    { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/(.*)", "dest": "myproject/wsgi.py" }
+    { "src": "/home.html", "dest": "/public/home.html" }
   ]
 }

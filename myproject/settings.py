@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -75,10 +76,20 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'postgres'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', 'db.mpbungacnrcrpjdxvnpr.supabase.co'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
+# Password validation
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
+
+# Supabase API config
+SUPABASE_URL = os.environ.get('SUPABASE_URL', 'https://mpbungacnrcrpjdxvnpr.supabase.co')
+SUPABASE_API_KEY = os.environ.get('SUPABASE_API_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wYnVuZ2FjbnJjcnBqZHh2bnByIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5NzI2NzAsImV4cCI6MjA3MjU0ODY3MH0.VE3e-btIupiFoq16p_HtljxBUxq0HYYKguwfrFtEMt8')
 
 
 # Password validation

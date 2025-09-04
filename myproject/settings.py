@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'postgres'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'db.mpbungacnrcrpjdxvnpr.supabase.co'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'postgres',
+            'USER': 'postgres.ptonrmazyvdfdouifans',
+            'PASSWORD': 'as0985593406',
+            'HOST': 'aws-1-ap-southeast-1.pooler.supabase.com',
+            'PORT': '5432',
     }
 }
 # Password validation

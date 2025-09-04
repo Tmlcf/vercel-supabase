@@ -9,19 +9,19 @@
   "routes": [
     {
       "src": "/index.html$",
-      "dest": "/templates/index.html"
+      "dest": "/public/index.html"
     },
     {
       "src": "/about.html$",
-      "dest": "/templates/about.html"
+      "dest": "/public/about.html"
     },
     {
       "src": "/contact.html$",
-      "dest": "/templates/contact.html"
+      "dest": "/public/contact.html"
     },
     {
       "src": "/home.html$",
-      "dest": "/templates/home.html"
+      "dest": "/public/home.html"
     },
     {
       "src": "/static/(.*)",

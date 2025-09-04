@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ติดต่อเรา - Contact</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .contact-list {
+            list-style: none;
+        }
+
+        .contact-item {
+            background: #f8f9fa;
+            margin-bottom: 20px;
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .contact-item:nth-child(1) { border-left-color: #3498db; }
+        .contact-item:nth-child(2) { border-left-color: #e74c3c; }
+        .contact-item:nth-child(3) { border-left-color: #2ecc71; }
+        .contact-item:nth-child(4) { border-left-color: #9b59b6; }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .contact-item:nth-child(1) .avatar { background: #3498db; }
+        .contact-item:nth-child(2) .avatar { background: #e74c3c; }
+        .contact-item:nth-child(3) .avatar { background: #2ecc71; }
+        .contact-item:nth-child(4) .avatar { background: #9b59b6; }
+
+        .contact-info {
+            flex-grow: 1;
+        }
+
+        .name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .email {
+            color: #7f8c8d;
+            font-size: 1rem;
+        }
+
+        .email a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .email a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .navigation {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin: 0 15px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .footer-text {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .nav-link {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .contact-item {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .contact-item:nth-child(1) { animation-delay: 0.1s; }
+        .contact-item:nth-child(2) { animation-delay: 0.2s; }
+        .contact-item:nth-child(3) { animation-delay: 0.3s; }
+        .contact-item:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Contact</h1>
+            <p>ติดต่อสมาชิกในทีมของเรา</p>
+        </div>
+
+        <ul class="contact-list">
+            <li class="contact-item">
+                <div class="avatar">ธ</div>
+                <div class="contact-info">
+                    <div class="name">ธีรภัทร อินทโร</div>
+                    <div class="email"><a href="mailto:thxrmor2@gmail.com">thxrmor2@gmail.com</a></div>
+                </div>
+            </li>
+
+            <li class="contact-item">
+                <div class="avatar">ส</div>
+                <div class="contact-info">
+                    <div class="name">สิทธินันท์ ชัยสิทธิ์</div>
+                    <div class="email"><a href="mailto:darksideez62@gmail.com">darksideez62@gmail.com</a></div>
+                </div>
+            </li>
+
+            <li class="contact-item">
+                <div class="avatar">พ</div>
+                <div class="contact-info">
+                    <div class="name">พชรพล พุ่มพิน</div>
+                    <div class="email"><a href="mailto:aszxcvbn1000@gmail.com">aszxcvbn1000@gmail.com</a></div>
+                </div>
+            </li>
+
+            <li class="contact-item">
+                <div class="avatar">อ</div>
+                <div class="contact-info">
+                    <div class="name">อภิสิทธิ์ สุนันท์</div>
+                    <div class="email"><a href="mailto:apisitget67@gmail.com">apisitget67@gmail.com</a></div>
+                </div>
+            </li>
+        </ul>
+
+      
+    
+    </div>
+
+    <script>
+        // เพิ่มเอฟเฟกต์เมื่อคลิกที่อีเมล
+        document.querySelectorAll('.email a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // แสดง animation เมื่อคลิก
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 100);
+            });
+        });
+
+        // Hover effect สำหรับการ์ด
+        document.querySelectorAll('.contact-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.background = '#ffffff';
+                this.style.boxShadow = '0 15px 30px rgba(0,0,0,0.15)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.background = '#f8f9fa';
+                this.style.boxShadow = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

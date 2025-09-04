@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการรายรับรายจ่าย</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card.income {
+            border-left-color: #00d4aa;
+        }
+
+        .stat-card.expense {
+            border-left-color: #ff6b6b;
+        }
+
+        .stat-card.balance {
+            border-left-color: #4facfe;
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .amount {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-card.income .amount { color: #00d4aa; }
+        .stat-card.expense .amount { color: #ff6b6b; }
+        .stat-card.balance .amount { color: #4facfe; }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            padding: 0 30px 30px;
+        }
+
+        .form-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .form-section h2 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            color: white;
+            font-size: 0.8rem;
+            padding: 8px 15px;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .transactions-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .transactions-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .transactions-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-section {
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+            background: #f8f9fa;
+        }
+
+        .filter-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .transactions-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .transaction-item {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            gap: 15px;
+            padding: 20px 30px;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        .transaction-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .transaction-icon.income {
+            background: linear-gradient(135deg, #00d4aa, #00b894);
+        }
+
+        .transaction-icon.expense {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        }
+
+        .transaction-details h4 {
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 1.1rem;
+        }
+
+        .transaction-details p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .transaction-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .transaction-amount.income { color: #00d4aa; }
+        .transaction-amount.expense { color: #ff6b6b; }
+
+        .transaction-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .type-toggle {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+
+        .type-toggle button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .type-toggle button.active {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .type-toggle button.income.active { color: #00d4aa; }
+        .type-toggle button.expense.active { color: #ff6b6b; }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-controls {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            
+            .transaction-item {
+                grid-template-columns: auto 1fr auto;
+                gap: 10px;
+            }
+            
+            .transaction-date, .btn-danger {
+                display: none;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💰 ระบบจัดการรายรับรายจ่าย</h1>
+            <p>จัดการการเงินของคุณอย่างมืออาชีพ</p>
+        <nav style="position: absolute; top: 30px; right: 40px; font-size: 1.1em; z-index: 1000; background: rgba(255,255,255,0);">
+                <a href="/home/" style="margin-left: 20px; text-decoration: none; color: #007bff;">Home</a>
+                <a href="/about/" style="margin-left: 20px; text-decoration: none; color: #007bff;">About</a>
+                <a href="/contact/" style="margin-left: 20px; text-decoration: none; color: #007bff;">Contact</a>
+            </nav>
+        </div>
+
+        <div class="dashboard">
+            <div class="stat-card income">
+                <h3>รายรับทั้งหมด</h3>
+                <div class="amount" id="totalIncome">฿0</div>
+                <p>เดือนนี้</p>
+            </div>
+            <div class="stat-card expense">
+                <h3>รายจ่ายทั้งหมด</h3>
+                <div class="amount" id="totalExpense">฿0</div>
+                <p>เดือนนี้</p>
+            </div>
+            <div class="stat-card balance">
+                <h3>ยอดคงเหลือ</h3>
+                <div class="amount" id="balance">฿0</div>
+                <p>สุทธิ</p>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2>📝 เพิ่มรายการใหม่</h2>
+                
+                <form id="transactionForm">
+                    <div class="type-toggle">
+                        <button type="button" class="income active" id="incomeBtn">รายรับ</button>
+                        <button type="button" class="expense" id="expenseBtn">รายจ่าย</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">รายละเอียด</label>
+                        <input type="text" id="description" name="description" required placeholder="เช่น เงินเดือน, ค่าอาหาร, ค่าเช่า">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">จำนวนเงิน (บาท)</label>
+                        <input type="number" id="amount" name="amount" required placeholder="0.00" step="0.01" min="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">หมวดหมู่</label>
+                        <select id="category" name="category" required>
+                            <option value="">เลือกหมวดหมู่</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date">วันที่</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">หมายเหตุ</label>
+                        <textarea id="notes" name="notes" placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        ➕ เพิ่มรายการ
+                    </button>
+                </form>
+            </div>
+
+            <div class="transactions-section">
+                <div class="transactions-header">
+                    <h2>📊 รายการทั้งหมด</h2>
+                    <div id="totalTransactions">0 รายการ</div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-controls">
+                        <div class="form-group">
+                            <label for="filterType">ประเภท</label>
+                            <select id="filterType">
+                                <option value="all">ทั้งหมด</option>
+                                <option value="income">รายรับ</option>
+                                <option value="expense">รายจ่าย</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterCategory">หมวดหมู่</label>
+                            <select id="filterCategory">
+                                <option value="all">ทั้งหมด</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filterMonth">เดือน</label>
+                            <select id="filterMonth">
+                                <option value="all">ทั้งหมด</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="clearFilters">
+                            🔄 รีเซ็ต
+                        </button>
+                    </div>
+                </div>
+
+                <div class="transactions-list" id="transactionsList">
+                    <div class="empty-state">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <h3>ยังไม่มีรายการ</h3>
+                        <p>เริ่มต้นโดยการเพิ่มรายรับหรือรายจ่ายแรกของคุณ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ExpenseTracker {
+            constructor() {
+                this.transactions = [];
+                this.currentType = 'income';
+                this.categories = {
+                    income: ['เงินเดือน', 'โบนัส', 'รายได้พิเศษ', 'ดอกเบี้ย', 'การลงทุน', 'อื่นๆ'],
+                    expense: ['อาหาร', 'ที่อยู่อาศัย', 'ขนส่ง', 'สาธารณูปโภค', 'ความบันเทิง', 'การศึกษา', 'สุขภาพ', 'เสื้อผ้า', 'อื่นๆ']
+                };
+                this.init();
+            }
+
+            init() {
+                this.loadTransactions();
+                this.setupEventListeners();
+                this.setTodayDate();
+                this.updateCategoryOptions();
+                this.updateDisplay();
+                this.populateMonthFilter();
+            }
+
+            setupEventListeners() {
+                // Type toggle
+                document.getElementById('incomeBtn').addEventListener('click', () => this.setType('income'));
+                document.getElementById('expenseBtn').addEventListener('click', () => this.setType('expense'));
+
+                // Form submission
+                document.getElementById('transactionForm').addEventListener('submit', (e) => this.handleSubmit(e));
+
+                // Filters
+                document.getElementById('filterType').addEventListener('change', () => this.applyFilters());
+                document.getElementById('filterCategory').addEventListener('change', () => this.applyFilters());
+                document.getElementById('filterMonth').addEventListener('change', () => this.applyFilters());
+                document.getElementById('clearFilters').addEventListener('click', () => this.clearFilters());
+            }
+
+            setType(type) {
+                this.currentType = type;
+                
+                // Update button states
+                document.querySelectorAll('.type-toggle button').forEach(btn => btn.classList.remove('active'));
+                document.getElementById(type + 'Btn').classList.add('active');
+                
+                // Update category options
+                this.updateCategoryOptions();
+            }
+
+            updateCategoryOptions() {
+                const categorySelect = document.getElementById('category');
+                categorySelect.innerHTML = '<option value="">เลือกหมวดหมู่</option>';
+                
+                this.categories[this.currentType].forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    categorySelect.appendChild(option);
+                });
+            }
+
+            setTodayDate() {
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('date').value = today;
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(e.target);
+                const transaction = {
+                    id: Date.now().toString(),
+                    type: this.currentType,
+                    description: formData.get('description'),
+                    amount: parseFloat(formData.get('amount')),
+                    category: formData.get('category'),
+                    date: formData.get('date'),
+                    notes: formData.get('notes') || '',
+                    timestamp: new Date()
+                };
+
+                this.addTransaction(transaction);
+                e.target.reset();
+                this.setTodayDate();
+                
+                // Show success feedback
+                this.showNotification('เพิ่มรายการเรียบร้อยแล้ว!', 'success');
+            }
+
+            addTransaction(transaction) {
+                this.transactions.unshift(transaction);
+                this.saveTransactions();
+                this.updateDisplay();
+                this.updateFilterOptions();
+            }
+
+            deleteTransaction(id) {
+                if (confirm('คุณต้องการลบรายการนี้หรือไม่?')) {
+                    this.transactions = this.transactions.filter(t => t.id !== id);
+                    this.saveTransactions();
+                    this.updateDisplay();
+                    this.showNotification('ลบรายการเรียบร้อยแล้ว!', 'success');
+                }
+            }
+
+            updateDisplay() {
+                this.updateStats();
+                this.renderTransactions();
+            }
+
+            updateStats() {
+                const totalIncome = this.transactions
+                    .filter(t => t.type === 'income')
+                    .reduce((sum, t) => sum + t.amount, 0);
+
+                const totalExpense = this.transactions
+                    .filter(t => t.type === 'expense')
+                    .reduce((sum, t) => sum + t.amount, 0);
+
+                const balance = totalIncome - totalExpense;
+
+                document.getElementById('totalIncome').textContent = this.formatCurrency(totalIncome);
+                document.getElementById('totalExpense').textContent = this.formatCurrency(totalExpense);
+                document.getElementById('balance').textContent = this.formatCurrency(balance);
+
+                // Update balance color
+                const balanceElement = document.getElementById('balance');
+                balanceElement.style.color = balance >= 0 ? '#00d4aa' : '#ff6b6b';
+            }
+
+            renderTransactions() {
+                const container = document.getElementById('transactionsList');
+                const filteredTransactions = this.getFilteredTransactions();
+
+                document.getElementById('totalTransactions').textContent = `${filteredTransactions.length} รายการ`;
+
+                if (filteredTransactions.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <h3>ไม่พบรายการ</h3>
+                            <p>ลองเปลี่ยนตัวกรองหรือเพิ่มรายการใหม่</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = filteredTransactions.map(transaction => `
+                    <div class="transaction-item fade-in">
+                        <div class="transaction-icon ${transaction.type}">
+                            ${transaction.type === 'income' ? '💰' : '💸'}
+                        </div>
+                        <div class="transaction-details">
+                            <h4>${transaction.description}</h4>
+                            <p>${transaction.category}${transaction.notes ? ' • ' + transaction.notes : ''}</p>
+                        </div>
+                        <div class="transaction-amount ${transaction.type}">
+                            ${transaction.type === 'income' ? '+' : '-'}${this.formatCurrency(transaction.amount)}
+                        </div>
+                        <div class="transaction-date">
+                            ${this.formatDate(transaction.date)}
+                        </div>
+                        <button class="btn btn-danger" onclick="expenseTracker.deleteTransaction('${transaction.id}')">
+                            🗑️ ลบ
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            getFilteredTransactions() {
+                let filtered = [...this.transactions];
+
+                const typeFilter = document.getElementById('filterType').value;
+                const categoryFilter = document.getElementById('filterCategory').value;
+                const monthFilter = document.getElementById('filterMonth').value;
+
+                if (typeFilter !== 'all') {
+                    filtered = filtered.filter(t => t.type === typeFilter);
+                }
+
+                if (categoryFilter !== 'all') {
+                    filtered = filtered.filter(t => t.category === categoryFilter);
+                }
+
+                if (monthFilter !== 'all') {
+                    filtered = filtered.filter(t => {
+                        const transactionMonth = new Date(t.date).toISOString().slice(0, 7);
+                        return transactionMonth === monthFilter;
+                    });
+                }
+
+                return filtered;
+            }
+
+            updateFilterOptions() {
+                this.updateCategoryFilter();
+                this.populateMonthFilter();
+            }
+
+            updateCategoryFilter() {
+                const categoryFilter = document.getElementById('filterCategory');
+                const currentValue = categoryFilter.value;
+                
+                const allCategories = [...new Set(this.transactions.map(t => t.category))];
+                
+                categoryFilter.innerHTML = '<option value="all">ทั้งหมด</option>';
+                allCategories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = category;
+                    categoryFilter.appendChild(option);
+                });
+                
+                categoryFilter.value = currentValue;
+            }
+
+            populateMonthFilter() {
+                const monthFilter = document.getElementById('filterMonth');
+                const currentValue = monthFilter.value;
+                
+                const months = [...new Set(this.transactions.map(t => 
+                    new Date(t.date).toISOString().slice(0, 7)
+                ))].sort().reverse();
+
+                monthFilter.innerHTML = '<option value="all">ทั้งหมด</option>';
+                months.forEach(month => {
+                    const option = document.createElement('option');
+                    option.value = month;
+                    option.textContent = this.formatMonth(month);
+                    monthFilter.appendChild(option);
+                });
+                
+                monthFilter.value = currentValue;
+            }
+
+            applyFilters() {
+                this.renderTransactions();
+            }
+
+            clearFilters() {
+                document.getElementById('filterType').value = 'all';
+                document.getElementById('filterCategory').value = 'all';
+                document.getElementById('filterMonth').value = 'all';
+                this.renderTransactions();
+            }
+
+            formatCurrency(amount) {
+                return new Intl.NumberFormat('th-TH', {
+                    style: 'currency',
+                    currency: 'THB',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                }).format(amount);
+            }
+
+            formatDate(dateString) {
+                return new Date(dateString).toLocaleDateString('th-TH', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            }
+
+            formatMonth(monthString) {
+                return new Date(monthString + '-01').toLocaleDateString('th-TH', {
+                    year: 'numeric',
+                    month: 'long'
+                });
+            }
+
+            showNotification(message, type) {
+                // Simple notification (you can enhance this)
+                alert(message);
+            }
+
+            saveTransactions() {
+                // In a real app, this would save to a database
+                // For now, we'll use localStorage
+                const data = JSON.stringify(this.transactions);
+                localStorage.setItem('expenseTrackerData', data);
+            }
+
+            loadTransactions() {
+                // In a real app, this would load from a database
+                const data = localStorage.getItem('expenseTrackerData');
+                if (data) {
+                    this.transactions = JSON.parse(data);
+                }
+            }
+        }
+
+        // Initialize the app
+        const expenseTracker = new ExpenseTracker();
+    </script>
+</body>
+</html>

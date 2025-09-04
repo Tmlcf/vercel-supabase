@@ -16,10 +16,17 @@ def login_view(request):
 		user = authenticate(request, username=username, password=password)
 		if user is not None:
 			auth_login(request, user)
-			return redirect('/')
+			return redirect('/home/')
 		else:
 			return render(request, 'index.html', {'login_error': 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'})
 	return redirect('/')
+
+# เพิ่ม view สำหรับ home
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='/')
+def home_view(request):
+	return render(request, 'home.html')
 
 @csrf_protect
 def register_view(request):

@@ -5,6 +5,8 @@
     { "src": "/", "dest": "/templates/index.html" },
     { "src": "/about", "dest": "/templates/about.html" },
     { "src": "/home", "dest": "/templates/home.html" },
+    { "src": "/contact", "dest": "/templates/contact.html" },
+    { "src": "/home", "status": 404 },
     { "src": "/login", "dest": "/templates/login.html" },
     { "src": "/login/", "dest": "/templates/login.html" },
     { "src": "/(.*)\\.html", "dest": "/templates/$1.html" },

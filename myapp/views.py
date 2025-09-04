@@ -28,6 +28,14 @@ from django.contrib.auth.decorators import login_required
 def home_view(request):
 	return render(request, 'home.html')
 
+# view สำหรับ about
+def about_view(request):
+	return render(request, 'about.html')
+
+# view สำหรับ contact
+def contact_view(request):
+	return render(request, 'contact.html')
+
 @csrf_protect
 def register_view(request):
 	if request.method == 'POST':

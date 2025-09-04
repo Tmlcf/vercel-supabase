@@ -10,5 +10,6 @@
     { "src": "/login/", "dest": "/templates/login.html" },
     { "src": "/(.*)\\.html", "dest": "/templates/$1.html" },
     { "src": "/(.*)", "dest": "myproject/wsgi.py" },
-    { "src": "/.*", "dest": "/templates/404.html" },
+    { "src": "/.*", "dest": "/templates/404.html" }
+  ]
 }

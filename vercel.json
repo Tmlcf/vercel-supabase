@@ -2,19 +2,14 @@
   "version": 2,
   "routes": [
     { "src": "/static/(.*)", "dest": "/static/$1" },
-    
-    { "src": "/", "dest": "/templates/home.html" },             // 🟢 เปลี่ยนหน้าแรกเป็น home.html
-    { "src": "/index", "dest": "/templates/home.html" },        // 🟢 index route ไปยัง home.html
-    { "src": "/index.html", "dest": "/templates/home.html" },   // 🟢 เผื่อมีการเรียกใช้ index.html ตรง ๆ
-    
-    { "src": "/about", "dest": "/templates/about.html" },
-    { "src": "/home", "dest": "/templates/home.html" },
-    { "src": "/contact", "dest": "/templates/contact.html" },
-    { "src": "/login", "dest": "/templates/login.html" },
-    { "src": "/login/", "dest": "/templates/login.html" },
-
-    { "src": "/(.*)\\.html", "dest": "/templates/$1.html" },
-    { "src": "/(.*)", "dest": "myproject/wsgi.py" },
-    { "src": "/.*", "dest": "/templates/404.html" }
+    { "src": "/", "dest": "templates/index.html" },
+    { "src": "/about", "dest": "templates/about.html" },
+    { "src": "/home", "dest": "templates/home.html" },
+    { "src": "/contact", "dest": "templates/contact.html" },
+    { "src": "/login", "dest": "templates/login.html" },
+    { "src": "/login/", "dest": "templates/login.html" },
+    { "src": "/(.*)\\.html", "dest": "templates/$1.html" },
+    { "src": "/(.*)", "dest": "myproject.wsgi:app" },
+    { "src": "/.*", "dest": "templates/404.html" }
   ]
 }

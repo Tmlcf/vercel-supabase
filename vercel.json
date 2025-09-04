@@ -9,5 +9,7 @@
     { "src": "/home", "dest": "/home.html" },
     { "src": "/(.*)\.html", "dest": "/$1.html" },
     { "src": "/(.*)", "dest": "myproject/wsgi.py" }
+    { "src": "/login", "dest": "/login.html" }
+
   ]
 }

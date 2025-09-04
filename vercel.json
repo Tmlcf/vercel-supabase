@@ -8,8 +8,20 @@
   ],
   "routes": [
     {
-      "src": "/templates/(.*)\\.html$",
-      "dest": "/templates/$1.html"
+      "src": "/index.html$",
+      "dest": "/templates/index.html"
+    },
+    {
+      "src": "/about.html$",
+      "dest": "/templates/about.html"
+    },
+    {
+      "src": "/contact.html$",
+      "dest": "/templates/contact.html"
+    },
+    {
+      "src": "/home.html$",
+      "dest": "/templates/home.html"
     },
     {
       "src": "/static/(.*)",

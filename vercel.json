@@ -2,14 +2,13 @@
   "version": 2,
   "routes": [
     { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/templates/(.*)\\.html$", "dest": "/templates/$1.html" },
-    { "src": "/$", "dest": "/index.html" },
-    { "src": "/about", "dest": "/about.html" },
-    { "src": "/contact", "dest": "/contact.html" },
-    { "src": "/home", "dest": "/home.html" },
-    { "src": "/login", "dest": "/login.html" },
-    { "src": "/login/", "dest": "/login.html" },  // เพิ่มบรรทัดนี้
-    { "src": "/(.*)\\.html", "dest": "/$1.html" },
+    { "src": "/$", "dest": "/templates/index.html" },
+    { "src": "/about", "dest": "/templates/about.html" },
+    { "src": "/contact", "dest": "/templates/contact.html" },
+    { "src": "/home", "dest": "/templates/home.html" },
+    { "src": "/login", "dest": "/templates/login.html" },
+    { "src": "/login/", "dest": "/templates/login.html" },
+    { "src": "/(.*)\\.html", "dest": "/templates/$1.html" },
     { "src": "/(.*)", "dest": "myproject/wsgi.py" }
   ]
 }

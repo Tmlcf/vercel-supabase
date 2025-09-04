@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>หน้าแรก - Login/Register</title>
+	<style>
+		body { font-family: Arial, sans-serif; background: #f4f4f4; }
+		.container { max-width: 400px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+		h2 { text-align: center; }
+		form { margin-bottom: 20px; }
+		input[type="text"], input[type="password"], input[type="email"] {
+			width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 4px;
+		}
+		button { width: 100%; padding: 10px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+		button:hover { background: #0056b3; }
+		.error { color: red; text-align: center; }
+		.success { color: green; text-align: center; }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div id="login-form" style="display: block;">
+			<h2>เข้าสู่ระบบ</h2>
+			{% if login_error %}<div class="error">{{ login_error }}</div>{% endif %}
+			<form method="post" action="/login/">
+				{% csrf_token %}
+				<input type="text" name="username" placeholder="Username" required>
+				<input type="password" name="password" placeholder="Password" required>
+				<button type="submit">ล็อกอิน</button>
+			</form>
+			<button type="button" style="margin-top:10px;background:#6c757d;" onclick="showRegister()">ไม่มีบัญชี? สมัครสมาชิก</button>
+		</div>
+		<div id="register-form" style="display: none;">
+			<h2>สมัครสมาชิก</h2>
+			{% if register_error %}<div class="error">{{ register_error }}</div>{% endif %}
+			{% if register_success %}<div class="success">{{ register_success }}</div>{% endif %}
+			<form method="post" action="/register/">
+				{% csrf_token %}
+				<input type="text" name="username" placeholder="Username" required>
+				<input type="email" name="email" placeholder="Email" required>
+				<input type="password" name="password" placeholder="Password" required>
+				<button type="submit">สมัครสมาชิก</button>
+			</form>
+			<button type="button" style="margin-top:10px;background:#6c757d;" onclick="showLogin()">มีบัญชีแล้ว? เข้าสู่ระบบ</button>
+		</div>
+	</div>
+	<script>
+		function showRegister() {
+			document.getElementById('login-form').style.display = 'none';
+			document.getElementById('register-form').style.display = 'block';
+		}
+		function showLogin() {
+			document.getElementById('register-form').style.display = 'none';
+			document.getElementById('login-form').style.display = 'block';
+		}
+		// กรณีมี error/success จาก register ให้เปิดฟอร์มสมัครสมาชิกทันที
+		{% if register_error or register_success %}
+		showRegister();
+		{% endif %}
+	</script>
+</body>
+</html>

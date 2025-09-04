@@ -2,14 +2,14 @@
   "version": 2,
   "routes": [
     { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/templates/(.*)\.html$", "dest": "/templates/$1.html" },
+    { "src": "/templates/(.*)\\.html$", "dest": "/templates/$1.html" },
     { "src": "/$", "dest": "/index.html" },
     { "src": "/about", "dest": "/about.html" },
     { "src": "/contact", "dest": "/contact.html" },
     { "src": "/home", "dest": "/home.html" },
-    { "src": "/(.*)\.html", "dest": "/$1.html" },
+    { "src": "/login", "dest": "/login.html" },
+    { "src": "/login/", "dest": "/login.html" },  // เพิ่มบรรทัดนี้
+    { "src": "/(.*)\\.html", "dest": "/$1.html" },
     { "src": "/(.*)", "dest": "myproject/wsgi.py" }
-    { "src": "/login", "dest": "/login.html" }
-
   ]
 }

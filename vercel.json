@@ -4,6 +4,7 @@
     { "src": "/$", "dest": "/index.html" },
     { "src": "/about", "dest": "/about.html" },
     { "src": "/contact", "dest": "/contact.html" },
-    { "src": "/home", "dest": "/home.html" }
+    { "src": "/home", "dest": "/home.html" },
+    { "src": "/(.*)\\.html", "dest": "/$1.html" }
   ]
 }

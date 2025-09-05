@@ -1,14 +1,23 @@
 {
   "version": 2,
+  "builds": [
+    {
+      "src": "myproject/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.11"
+      }
+    }
+  ],
   "routes": [
-    { "src": "/static/(.*)", "dest": "/static/$1" },
-    { "src": "/", "dest": "templates/index.html" },
-    { "src": "/about", "dest": "templates/about.html" },
-    { "src": "/home", "dest": "templates/home.html" },
-    { "src": "/contact", "dest": "templates/contact.html" },
-    { "src": "/login", "dest": "templates/login.html" },
-    { "src": "/(.*)\\.html", "dest": "templates/$1.html" },
-    { "src": "/(.*)", "dest": "myproject.wsgi:app" },
-    { "src": "/.*", "dest": "templates/404.html" }
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "myproject/wsgi.py"
+    }
   ]
 }

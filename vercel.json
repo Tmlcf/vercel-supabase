@@ -1,15 +1,21 @@
 {
-  "version": 2,
   "builds": [
     {
-      "src": "myproject/wsgi.py",
-      "use": "@vercel/python"
+      "src": "build_files.sh",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "staticfiles"
+      }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "myproject/wsgi.py"
+      "dest": "wsgi.py"
     }
-  ]
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "myproject.settings",
+    "PYTHONUNBUFFERED": "1"
+  }
 }
